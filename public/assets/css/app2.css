@@ -1,0 +1,87 @@
+body {
+    font-family: 'Tenor Sans', sans-serif !important;
+    font-style: normal;
+    margin: auto !important;
+}
+
+
+span {
+    font-size: 12px !important;
+    text-align: justify !important;
+}
+
+::placeholder {
+  color: grey !important;
+  opacity: 1; /* Firefox */
+}
+
+::-ms-input-placeholder { /* Edge 12-18 */
+  color: grey !important;
+}
+
+.form-control{
+    border: 1px solid #1f1f1f !important;
+}
+
+.header-ethica{
+    background-color: black;
+    text-align: center;
+}
+
+.login {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+}
+
+.text-cream {
+    color: #BCAA97;
+}
+
+.btn-cream{
+    background-color: #BCAA97 !important;
+    color: white !important;
+}
+
+.btn-cream:hover{
+    background-color: #FF9F00 !important;
+    color: white !important;
+}
+
+.img-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container {
+    padding: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+hr{
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 3px solid #BCAA97 !important;
+    margin: 1em 0;
+    padding: 0;
+}
+
+.title-pertanyaan{
+    color: #BCAA97;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 32px;
+}
+
+.form-check-input{
+    background-color: #BCAA97 !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .login{
+        width: 85%;
+    }
+}

@@ -1,0 +1,138 @@
+body {
+    font-family: 'Tenor Sans', sans-serif !important;
+    font-style: normal;
+    background-color: #1F1F1F !important;
+    max-width: 500px;
+    margin: auto !important;
+    border: 1px white solid;
+}
+
+input{
+    color: white !important;
+}
+
+span {
+    font-size: 12px !important;
+    text-align: justify !important;
+}
+
+::placeholder {
+  color: grey !important;
+  opacity: 1; /* Firefox */
+}
+
+::-ms-input-placeholder { /* Edge 12-18 */
+  color: grey !important;
+}
+
+.form-control{
+    background-color: #1F1F1F !important;
+    border: none !important;
+    border-bottom: 2px solid white !important;
+}
+
+.header-ethica{
+    background-color: black;
+    text-align: center;
+}
+
+.login {
+  margin: auto;
+  padding: 10px;
+}
+
+.text-cream {
+    color: #BCAA97;
+}
+
+.btn-cream{
+    background-color: #BCAA97 !important;
+    color: white !important;
+}
+
+.tri-d{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 0px;
+    top: 210px;
+    z-index: 6;
+}
+
+.btn-cream:hover{
+    background-color: #FF9F00 !important;
+    color: white !important;
+}
+
+.img-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container {
+    padding: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+hr{
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 3px solid #BCAA97 !important;
+    margin: 1em 0;
+    padding: 0;
+}
+
+.title-pertanyaan{
+    color: #BCAA97;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 32px;
+}
+
+.form-check-input{
+    background-color: #BCAA97 !important;
+}
+
+ .d-grid-card {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 4px;
+    padding-left: 0;
+}
+
+.price-awal {
+    color: gray;
+    font-size: 11px;
+}
+
+.price-diskon {
+    color: white;
+    font-size: 16px;
+}
+
+.btn-group {
+    border-radius: var(--bs-border-radius);
+}
+
+.btn-outline-cream {
+    --bs-btn-color: #FF9F00;
+    --bs-btn-border-color: #FF9F00;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #FF9F00;
+    --bs-btn-hover-border-color: #FF9F00;
+    --bs-btn-focus-shadow-rgb: 13, 110, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #FF9F00;
+    --bs-btn-active-border-color: #FF9F00;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #FF9F00;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #FF9F00;
+    --bs-gradient: none;
+}
+@media only screen and (max-width: 600px) {
+    
+}
