@@ -44,6 +44,14 @@ Route::group(['middleware' =>['auth', 'admin']], function () {
         Route::post('image-produk', [AdminController::class, 'create_image_produk'])->name('create.image-produk');
         Route::put('image-produk/{id}', [AdminController::class, 'update_image_produk'])->name('update-image-produk');
 
+        Route::get('option-button', [AdminController::class, 'take_option_produk'])->name('take_option_produk');
+        Route::post('option-button', [AdminController::class, 'create_option_btn'])->name('create.option_btn');
+        Route::get('option_btn/{id}', [AdminController::class, 'option_btn_by_id'])->name('option_btn-by-id');
+        Route::put('option_btn/{id}', [AdminController::class, 'update_option_btn'])->name('update-option_btn');
+        Route::delete('option_btn/{id}', [AdminController::class, 'delete_option_btn'])->name('delete-option_btn');
+
+
+
 
 
     });

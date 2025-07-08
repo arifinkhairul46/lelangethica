@@ -214,7 +214,6 @@
             fetch('/master/produk/' + id)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     $("#nama_produk_edit").val(data.nama_produk)
                     $("#qty_stok_edit").val(data.stok)
                     $("#brand_id_edit").val(data.brand_id)

@@ -14,7 +14,10 @@ class ProdukController extends Controller
     public function index(){
         $list_produk = Produk::where('status', 1)->get();
 
-        return view('index', compact('list_produk'));
+        $produkList = Produk::with('takeOptions.button')->get();
+        // dd($produkList);
+
+        return view('index', compact('list_produk', 'produkList'));
     }
 
     public function detail(Request $request, $id){
@@ -26,7 +29,7 @@ class ProdukController extends Controller
 
     public function order_po(Request $request) {
         $user_id = Auth::user()->id;
-        $no_order = 'LPO-FGE-'. date('YmdHis');
+        $no_order = 'LPO-FGE-'. date('YmdHis') . '-'. $user_id;
         $produk_id = $request->id;
         $qty_order = $request->qty;
 

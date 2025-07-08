@@ -9,6 +9,8 @@ use App\Models\OrderLelang;
 use App\Models\Produk;
 use App\Models\Role;
 use App\Models\Sarimbit;
+use App\Models\TakeButton;
+use App\Models\TakeOptionProduk;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -224,4 +226,65 @@ class AdminController extends Controller
         $file_name = 'order-po-'.$now.'.xlsx';
         return Excel::download(new OrderExport(), $file_name);
     }
+
+    public function take_option_produk()
+    {
+        $option_button = TakeButton::select('mtop.id', 'mp.nama_produk', 'm_take_button.name as btn_name', 'mtop.created_at')
+                        ->leftJoin('m_take_option_produk as mtop', 'mtop.take_btn_id', 'm_take_button.id')
+                        ->leftJoin('m_produk as mp', 'mtop.produk_id', 'mp.id')
+                        ->get();
+
+        $produk = Produk::where('status', 1)->get();
+
+        $take_btn = TakeButton::all();
+        
+
+        return view ('admin.master.option-btn', compact('option_button', 'produk', 'take_btn'));
+        
+    }
+
+    public function create_option_btn(Request $request){
+
+        $produk = $request->produk_id;
+        $take_btn = $request->take_btn_id;
+       
+
+        $create = TakeOptionProduk::create([
+            'produk_id' => $produk,
+            'take_btn_id' => $take_btn,
+        ]);
+
+        return redirect()->back()->with('success', 'berhasil menambah opsi button');
+    }
+
+    public function option_btn_by_id(Request $request, $id)
+    {
+        $option_btn_by_id = TakeOptionProduk::where('id', $id)->first();
+
+        return response()->json($option_btn_by_id);
+    }
+
+    public function update_option_btn(Request $request, $id){
+        try {
+
+            $update_option = TakeOptionProduk::where('id', $id)->update([
+                'produk_id' => $request->produk_id_edit,
+                'take_btn_id' => $request->take_btn_id_edit,
+            ]);
+            return redirect()->back()->withSuccess('Success update Opsi Button ');
+        } catch (\Exception $e) {
+            return redirect()->back()->withError($e->getMessage());
+        }
+
+    }
+
+    public function delete_option_btn($id) {
+        try {
+            $delete = TakeOptionProduk::where('id', $id)->delete();
+            return redirect()->back()->withSuccess('Berhasil menghapus opsi button');
+        } catch (\Exception $e) {
+            return redirect()->back()->withError($e->getMessage());
+        }
+    }
+
 }

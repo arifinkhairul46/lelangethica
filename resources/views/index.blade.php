@@ -9,7 +9,7 @@
 
     <div class="container">
         <div class="d-grid-card">
-            @foreach ($list_produk as $item )
+            @foreach ($produkList as $item )
                 @if($item->datetime_released <= date('Y-m-d H:i:s') && $item->datetime_end >= date('Y-m-d H:i:s') && $item->stok > 0)
                 <div class="card shadow text-white bg-dark mb-1">
                     <img src="{{ asset('storage/'.$item->image_produk) }}" class="card-img-top" alt="{{$item->image}}" style="max-height: 240px">
@@ -22,13 +22,13 @@
                         <p style="font-size: 12px;">Quantity Stok : <input class="bg-dark" style="border: none" id="stok_avail_{{$item->id}}" value="{{$item->stok}}" disabled> </p> 
                         <div class="text-center mt-3">
                             @if (Auth::check())
-                                <button type="button" class="btn btn-sm btn-cream" id="take_all_{{$item->id}}" onclick="take_all('{{$item->id}}', '{{$item->stok}}')" >Take All</button>
-                                <button type="button" class="btn btn-sm btn-cream" id="take_20_{{$item->id}}" onclick="take_20('{{$item->id}}')" >Take 20</button>
-                                <button type="button" class="btn btn-sm btn-cream"  id="custom_{{$item->id}}" onclick="open_info('{{$item->id}}')" > Custom</button>
+                                @foreach ($item->takeOptions as $option )
+                                    <button type="button" class="btn btn-sm btn-cream" id="{{$option->button->label}}_{{$item->id}}" onclick="{{$option->button->label}}('{{$item->id}}')" > {{$option->button->name}} </button>
+                                @endforeach
                             @else
-                                <a href="{{route('login')}}"> <button type="button" class="btn btn-sm btn-cream" id="take_all_{{$item->id}}"  >Take All</button> </a>
-                                <a href="{{route('login')}}"> <button type="button" class="btn btn-sm btn-cream" id="take_20_{{$item->id}}" >Take 20</button> </a>
-                                <a href="{{route('login')}}"> <button type="button" class="btn btn-sm btn-cream"  id="custom_{{$item->id}}" > Custom</button> </a>
+                                @foreach ($item->takeOptions as $option )
+                                    <a href="{{route('login')}}" style="text-decoration: none"> <button type="button" class="btn btn-sm btn-cream"> {{$option->button->name}} </button> </a>
+                                @endforeach
                             @endif
                             <div class="d-flex justify-content-center"> 
                                 <input type="phone" style="display:none; width: 30%" name="radios_{{$item->id}}" id="input_qty_{{$item->id}}" class="form-control form-control-sm text-center mx-2 mt-2">
@@ -48,14 +48,16 @@
                             <p style="font-size: 12px;">Quantity Stok :  {{$item->stok}} </p>
                             <div class="text-center mt-3">
                                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                    <input type="radio" class="btn-check" name="btnradio_{{$item->id}}" id="take_all_{{$item->id}}" autocomplete="off" disabled>
-                                    <label class="btn btn-sm btn-outline-warning" for="take_all_{{$item->id}}">Take All </label>
-        
-                                    <input type="radio" class="btn-check" name="btnradio_{{$item->id}}" id="take_20_{{$item->id}}" autocomplete="off" disabled>
+                                    @foreach ($item->takeOptions as $option )
+                                        <input type="radio" class="btn-check" name="btnradio_{{$item->id}}" id="{{$option->button->label}}_{{$item->id}}" autocomplete="off" disabled>
+                                        <label class="btn btn-sm btn-outline-warning" for="{{$option->button->label}}_{{$item->id}}"> {{$option->button->name}} </label>
+                                    @endforeach
+
+                                    {{-- <input type="radio" class="btn-check" name="btnradio_{{$item->id}}" id="take_20_{{$item->id}}" autocomplete="off" disabled>
                                     <label class="btn btn-sm btn-outline-warning" for="take_20_{{$item->id}}">Take 20</label>
         
                                     <input type="radio" class="btn-check" name="btnradio_{{$item->id}}" id="custom_{{$item->id}}" autocomplete="off" disabled>
-                                    <label class="btn btn-sm btn-outline-warning" for="custom_{{$item->id}}">Custom</label>
+                                    <label class="btn btn-sm btn-outline-warning" for="custom_{{$item->id}}">Custom</label> --}}
 
                                 </div>
                             </div>
@@ -74,14 +76,16 @@
                             <p style="font-size: 12px;">Quantity Stok : {{$item->stok}} </p>
                             <div class="text-center mt-3">
                                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                    <input type="radio" class="btn-check" name="btnradio_{{$item->id}}" id="take_all_{{$item->id}}" autocomplete="off" disabled>
-                                    <label class="btn btn-sm btn-outline-warning" for="take_all_{{$item->id}}">Take All </label>
-        
-                                    <input type="radio" class="btn-check" name="btnradio_{{$item->id}}" id="take_20_{{$item->id}}" autocomplete="off" disabled>
+                                    @foreach ($item->takeOptions as $option )
+                                        <input type="radio" class="btn-check" name="btnradio_{{$item->id}}" id="{{$option->button->label}}_{{$item->id}}" autocomplete="off" disabled>
+                                        <label class="btn btn-sm btn-outline-warning" for="{{$option->button->label}}_{{$item->id}}"> {{$option->button->name}} </label>
+                                    @endforeach
+
+                                    {{-- <input type="radio" class="btn-check" name="btnradio_{{$item->id}}" id="take_20_{{$item->id}}" autocomplete="off" disabled>
                                     <label class="btn btn-sm btn-outline-warning" for="take_20_{{$item->id}}">Take 20</label>
         
                                     <input type="radio" class="btn-check" name="btnradio_{{$item->id}}" id="custom_{{$item->id}}" autocomplete="off" disabled>
-                                    <label class="btn btn-sm btn-outline-warning" for="custom_{{$item->id}}">Custom</label>
+                                    <label class="btn btn-sm btn-outline-warning" for="custom_{{$item->id}}">Custom</label> --}}
                                 </div>
                             </div>
                         </div>
@@ -109,19 +113,19 @@
             });
         });
 
-        function open_info(id) {
+        function custom(id) {
             $('#input_qty_'+ id).show();
             $('#btn_order_custom_'+id).show();
             
         }
 
         function close_info() {
-            $('#input_qty').hide();
+            $('#input_qty_' + id).hide();
             $('#btn_order_custom_'+id).hide();
         }
 
          function take_20(id) {
-            $('#input_qty').hide();
+            $('#input_qty_' + id).hide();
             $('#btn_order_custom_'+id).hide();
 
             var qty = 20;

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lelang Fashion Ethica</title>
+    <title>PRA GRSI | Admin</title>
     <link href="#" rel="icon" type="image/jpg">
     <link rel="stylesheet" href="{{ asset('assets/css/app2.css?v=').time() }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"  type='text/css'>

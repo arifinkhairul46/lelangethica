@@ -23,4 +23,9 @@ class Produk extends Model
         'datetime_released',
         'datetime_end'
     ];
+
+    public function takeOptions()
+    {
+        return $this->hasMany(TakeOptionProduk::class, 'produk_id')->with('button');
+    }
 }
