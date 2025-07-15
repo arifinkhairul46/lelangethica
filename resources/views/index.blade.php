@@ -15,22 +15,22 @@
                     <img src="{{ asset('storage/'.$item->image_produk) }}" class="card-img-top" alt="{{$item->image}}" style="max-height: 240px">
                     <div class="card-body pt-1">
                         <div class="d-flex" style="justify-content: space-between">
-                            <h5 class="card-title my-1" style="color: #BCAA97">{{$item->nama_produk}}</h5>    
+                            <h5 class="card-title my-1" style="color: #BCAA97">{{$item->nama_produk}}</h5>
                             <span class="mt-1 p-1 px-2 tri-d bg-success"> <b> Open </b> </span>
                             <span class="bg-danger text-white px-2 pt-1 mt-2" style="font-weight: bold; border-radius: 1rem;" id="batas_lelang_{{$item->id}}" data-countdown = "{{ date('Y-m-d H:i:s', strtotime($item->datetime_end))}}" >{{$item->datetime_end}} </span>
                         </div>
-                        <p style="font-size: 12px;">Quantity Stok : <input class="bg-dark" style="border: none" id="stok_avail_{{$item->id}}" value="{{$item->stok}}" disabled> </p> 
+                        <p style="font-size: 12px;">Quantity Stok : <input class="bg-dark" style="border: none" id="stok_avail_{{$item->id}}" value="{{$item->stok}}" disabled> </p>
                         <div class="text-center mt-3">
                             @if (Auth::check())
                                 @foreach ($item->takeOptions as $option )
-                                    <button type="button" class="btn btn-sm btn-cream" id="{{$option->button->label}}_{{$item->id}}" onclick="{{$option->button->label}}('{{$item->id}}')" > {{$option->button->name}} </button>
+                                    <button type="button" class="btn btn-sm btn-cream" id="{{$option->button->label}}_{{$item->id}}" onclick="{{$option->button->label}}('{{$item->id}}', '{{$item->stok}}')" > {{$option->button->name}} </button>
                                 @endforeach
                             @else
                                 @foreach ($item->takeOptions as $option )
                                     <a href="{{route('login')}}" style="text-decoration: none"> <button type="button" class="btn btn-sm btn-cream"> {{$option->button->name}} </button> </a>
                                 @endforeach
                             @endif
-                            <div class="d-flex justify-content-center"> 
+                            <div class="d-flex justify-content-center">
                                 <input type="phone" style="display:none; width: 30%" name="radios_{{$item->id}}" id="input_qty_{{$item->id}}" class="form-control form-control-sm text-center mx-2 mt-2">
                                 <button type="button" class="btn btn-sm btn-cream mt-2" id="btn_order_custom_{{$item->id}}" style="display: none" onclick="order_custom('{{$item->id}}')" > Order </button>
                             </div>
@@ -42,7 +42,7 @@
                         <img src="{{ asset('storage/'.$item->image_produk) }}" class="card-img-top" alt="{{$item->image}}" style="max-height: 240px; filter: opacity(0.3);">
                         <div class="card-body pt-1">
                             <div class="d-flex" style="justify-content: space-between">
-                                <h5 class="card-title my-1" style="color: #BCAA97">{{$item->nama_produk}}</h5>    
+                                <h5 class="card-title my-1" style="color: #BCAA97">{{$item->nama_produk}}</h5>
                                 <span class="mt-1 p-1 px-2 tri-d bg-warning"> <b> Upcoming </b> </span>
                             </div>
                             <p style="font-size: 12px;">Quantity Stok :  {{$item->stok}} </p>
@@ -55,7 +55,7 @@
 
                                     {{-- <input type="radio" class="btn-check" name="btnradio_{{$item->id}}" id="take_20_{{$item->id}}" autocomplete="off" disabled>
                                     <label class="btn btn-sm btn-outline-warning" for="take_20_{{$item->id}}">Take 20</label>
-        
+
                                     <input type="radio" class="btn-check" name="btnradio_{{$item->id}}" id="custom_{{$item->id}}" autocomplete="off" disabled>
                                     <label class="btn btn-sm btn-outline-warning" for="custom_{{$item->id}}">Custom</label> --}}
 
@@ -65,12 +65,12 @@
                     </div>
 
                 @else
-                    
+
                     <div class="card shadow text-white bg-dark mb-1">
                         <img src="{{ asset('storage/'.$item->image_produk) }}" class="card-img-top" alt="{{$item->image}}" style="max-height: 240px; filter: opacity(0.3);">
                         <div class="card-body pt-1">
                             <div class="d-flex" style="justify-content: space-between">
-                                <h5 class="card-title my-1" style="color: #BCAA97">{{$item->nama_produk}}</h5>    
+                                <h5 class="card-title my-1" style="color: #BCAA97">{{$item->nama_produk}}</h5>
                                 <span class="mt-1 p-1 px-2 tri-d bg-danger"> <b> Closed </b> </span>
                             </div>
                             <p style="font-size: 12px;">Quantity Stok : {{$item->stok}} </p>
@@ -83,7 +83,7 @@
 
                                     {{-- <input type="radio" class="btn-check" name="btnradio_{{$item->id}}" id="take_20_{{$item->id}}" autocomplete="off" disabled>
                                     <label class="btn btn-sm btn-outline-warning" for="take_20_{{$item->id}}">Take 20</label>
-        
+
                                     <input type="radio" class="btn-check" name="btnradio_{{$item->id}}" id="custom_{{$item->id}}" autocomplete="off" disabled>
                                     <label class="btn btn-sm btn-outline-warning" for="custom_{{$item->id}}">Custom</label> --}}
                                 </div>
@@ -91,7 +91,7 @@
                         </div>
                     </div>
                 @endif
-                        
+
             @endforeach
         </div>
     </div>
@@ -116,7 +116,7 @@
         function custom(id) {
             $('#input_qty_'+ id).show();
             $('#btn_order_custom_'+id).show();
-            
+
         }
 
         function close_info() {
@@ -179,7 +179,7 @@
 
         function order_custom(id) {
             var qty_order = $('#input_qty_' +id).val();
-            
+
             $.ajax({
                 url: "{{route('checkout')}}",
                 type: 'POST',
@@ -209,7 +209,7 @@
                     document.getElementById('server-time').innerText = data.time;
                 });
         }, 1000);
-        
+
 
     </script>
 

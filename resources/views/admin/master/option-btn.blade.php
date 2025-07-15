@@ -27,24 +27,29 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if (count($option_button) == 0)
+                                <tr>
+                                    <td colspan="5" class="text-center">No data available</td>
+                                </tr>
+                            @endif
                            @foreach ($option_button as $item )
-                           <tr>
-                                <td>{{$loop->iteration}}</td>
-                                <td> {{$item->nama_produk}} </td>
-                                <td> {{$item->btn_name}} </td>
-                                <td> {{$item->created_at}} </td>
-                                <td class="d-flex">
-                                    <button class="btn btn-sm btn-warning mx-2" title="Edit" data-bs-toggle="modal" data-bs-target="#edit_option_btn" onclick="editOptionBtn({{$item->id}})">
-                                        <i class="fa-solid fa-pencil"></i>
-                                    </button>
-                                    <form action="{{route('delete-option_btn', $item->id)}}" method="POST">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this item?')">
-                                            <i class="fa-solid fa-trash"></i>
+                                <tr>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td> {{$item->nama_produk}} </td>
+                                    <td> {{$item->btn_name}} </td>
+                                    <td> {{$item->created_at}} </td>
+                                    <td class="d-flex">
+                                        <button class="btn btn-sm btn-warning mx-2" title="Edit" data-bs-toggle="modal" data-bs-target="#edit_option_btn" onclick="editOptionBtn({{$item->id}})">
+                                            <i class="fa-solid fa-pencil"></i>
                                         </button>
-                                    </form>
-                                </td>
-                           </tr>
+                                        <form action="{{route('delete-option_btn', $item->id)}}" method="POST">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this item?')">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
                            @endforeach
                         </tbody>
                     </table>

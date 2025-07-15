@@ -36,7 +36,7 @@ class ProdukController extends Controller
         DB::beginTransaction();
 
         try {
-            // update_stok 
+            // update_stok
             $barang = Produk::where('id', $produk_id)->lockForUpdate()->first();
 
             if ($barang->stok < $qty_order) {
@@ -71,7 +71,7 @@ class ProdukController extends Controller
             DB::rollBack();
             return response()->json(['message' => 'Gagal checkout'], 500);
         }
-        
+
     }
 
     public function order_history(){
@@ -83,5 +83,10 @@ class ProdukController extends Controller
                         ->get();
 
         return view('order', compact('get_order_user'));
+    }
+
+    public function dashboard($id) {
+        $produk = Produk::find($id);
+        return view('dashboard', compact('produk'));
     }
 }

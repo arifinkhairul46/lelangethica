@@ -26,6 +26,7 @@ Route::get('/', [ProdukController::class, 'index'])->name('index');
 Route::post('order', [ProdukController::class, 'order_po'])->name('checkout');
 Route::get('detail/{id}', [ProdukController::class, 'detail'])->name('detail');
 Route::get('orders', [ProdukController::class, 'order_history'])->name('order_history');
+Route::get('dashboard/{produk_id}', [ProdukController::class, 'dashboard'])->name('dashboard');
 
 Route::group(['middleware' =>['auth', 'admin']], function () {
     Route::prefix('master')->group(function () {
