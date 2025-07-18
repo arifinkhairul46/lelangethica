@@ -14,6 +14,7 @@ use App\Models\TakeOptionProduk;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -82,7 +83,7 @@ class AdminController extends Controller
         $list_produk = Produk::select('m_produk.*', 'b.name as name_brand', 's.name as name_sarimbit')
                                 ->leftJoin('m_brands as b', 'b.id', 'm_produk.brand_id')
                                 ->leftJoin('m_sarimbit as s', 's.id', 'm_produk.sarimbit_id')
-                                ->where('m_produk.status', 1)
+                                // ->where('m_produk.status', 1)
                                 ->get();
 
         return view ('admin.master.produk', compact('list_produk', 'brand', 'sarimbit'));
@@ -109,9 +110,20 @@ class AdminController extends Controller
         $path = 'produk/image_produk';
 
         if ($request->has('image_produk')) {
-            $image_name = $request->file('image_produk')->getClientOriginalName();
+            $image      = $request->file('image_produk');
+            $image_name = $image->getClientOriginalName();
+
+            // Path tujuan di folder public
+            $destinationPath = public_path($path);
+
+            // Pindahkan file
+            $image->move($destinationPath, $image_name);
+
             $image_url = $path . '/' . $image_name;
-            Storage::disk('public')->put($image_url, file_get_contents($request->file('image_produk')->getRealPath()));
+
+            // $image_name = $request->file('image_produk')->getClientOriginalName();
+            // $image_url = $path . '/' . $image_name;
+            // Storage::disk('public')->put($image_url, file_get_contents($request->file('image_produk')->getRealPath()));
         } else {
             return redirect()->back()->with('error', 'Image tidak boleh kosong');
         }
@@ -121,9 +133,10 @@ class AdminController extends Controller
             'brand_id' => $brand_id,
             'sarimbit_id' => $sarimbit_id,
             'stok' => $stok,
+            'stok_awal' => $stok,
             'datetime_released' => $released,
             'datetime_end' => $date_end,
-            'image_produk' => $image_url, 
+            'image_produk' => $image_url,
             'status' => 1
         ]);
 
@@ -234,20 +247,19 @@ class AdminController extends Controller
                         ->leftJoin('m_produk as mp', 'mtop.produk_id', 'mp.id')
                         ->get();
 
-        $produk = Produk::where('status', 1)->get();
+        $produk = Produk::where('status', 1)->where('stok', '>', 0)->get();
 
         $take_btn = TakeButton::all();
-        
+
 
         return view ('admin.master.option-btn', compact('option_button', 'produk', 'take_btn'));
-        
+
     }
 
     public function create_option_btn(Request $request){
 
         $produk = $request->produk_id;
         $take_btn = $request->take_btn_id;
-       
 
         $create = TakeOptionProduk::create([
             'produk_id' => $produk,
@@ -285,6 +297,31 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->withError($e->getMessage());
         }
+    }
+
+    public function list_order(){
+        $list_produk = Produk::where('status', 1 )->get();
+        $list_user = User::where('role_id', 2)->get();
+
+        $order_by_agen = OrderLelang::select('u.name as agen',
+                            DB::raw('SUM(CASE WHEN p.id = 1 THEN t_order_lelang.qty ELSE 0 END) AS produk_a'),
+                            DB::raw('SUM(CASE WHEN p.id = 2 THEN t_order_lelang.qty ELSE 0 END) AS produk_b'),
+                            DB::raw('SUM(CASE WHEN p.id = 3 THEN t_order_lelang.qty ELSE 0 END) AS produk_c'),
+                            DB::raw('SUM(CASE WHEN p.id = 4 THEN t_order_lelang.qty ELSE 0 END) AS produk_d'),
+                            DB::raw('SUM(CASE WHEN p.id = 5 THEN t_order_lelang.qty ELSE 0 END) AS produk_e'),
+                            DB::raw('SUM(CASE WHEN p.id = 6 THEN t_order_lelang.qty ELSE 0 END) AS produk_f'),
+                            DB::raw('SUM(CASE WHEN p.id = 7 THEN t_order_lelang.qty ELSE 0 END) AS produk_g'),
+                            DB::raw('SUM(CASE WHEN p.id = 8 THEN t_order_lelang.qty ELSE 0 END) AS produk_h'),
+                            DB::raw('SUM(CASE WHEN p.id = 9 THEN t_order_lelang.qty ELSE 0 END) AS produk_i'),
+                            DB::raw('SUM(CASE WHEN p.id = 10 THEN t_order_lelang.qty ELSE 0 END) AS produk_j')
+                            )
+                            ->leftJoin('users as u', 'u.id', 't_order_lelang.user_id')
+                            ->leftJoin('m_produk as p', 'p.id', 't_order_lelang.produk_id')
+                            ->groupBy('u.id')
+                            ->orderBy('u.id')
+                            ->get();
+
+        return view('admin.transaksi.order', compact('list_produk', 'list_user', 'order_by_agen'));
     }
 
 }

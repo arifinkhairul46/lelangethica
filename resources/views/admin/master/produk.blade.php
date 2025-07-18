@@ -24,9 +24,11 @@
                                 <th>Brand </th>
                                 <th>Sarimbit</th>
                                 <th>Stok</th>
-                                <th>Image Produk</th>
+                                <th>Image</th>
                                 <th>Date Released</th>
                                 <th>Date End</th>
+                                <th>Status</th>
+                                <th>Dashboard</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -38,9 +40,17 @@
                                 <td> {{$item->name_brand}} </td>
                                 <td> {{$item->name_sarimbit}} </td>
                                 <td> {{$item->stok}} </td>
-                                <td><img src="{{asset('storage/'.$item->image_produk)}}" id="img_produk_{{$item->id}}"  onclick="zoomImage('{{asset('storage/'.$item->image_produk)}}')" width="50"></td>
+                                <td><img src="{{asset($item->image_produk)}}" id="img_produk_{{$item->id}}"  onclick="zoomImage('{{asset($item->image_produk)}}')" width="25"></td>
                                 <td> {{date('d-m-Y; H:i', strtotime($item->datetime_released)) }} </td>
                                 <td> {{date('d-m-Y; H:i', strtotime($item->datetime_end))}} </td>
+                                <td>
+                                    @if ($item->status == 1)
+                                        <span class="badge bg-success">Aktif</span>
+                                    @else
+                                        <span class="badge bg-danger">Tidak Aktif</span>
+                                    @endif
+                                </td>
+                                <td> <a href="{{route('dashboard', $item->id)}}" target="_blank"> Dashboard </a> </td>
                                 <td class="d-flex">
                                     <button class="btn btn-sm btn-warning" title="Edit" onclick="edit_produk('{{$item->id}}')" data-bs-toggle="modal" data-bs-target="#edit_produk">
                                         <i class="fa-solid fa-pencil"></i>
@@ -120,7 +130,7 @@
         </div>
     </div>
 
-    
+
      {{-- edit --}}
     <div class="modal fade" id="edit_produk" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
         <div class="modal-dialog">
@@ -136,7 +146,7 @@
                             <label for="nama_produk_edit" class="form-control-label">Nama produk</label>
                             <input type="text" class="form-control" name="nama_produk_edit" id="nama_produk_edit" required>
                         </div>
-                      
+
                        <div class="form-group">
                             <label for="qty_stok_edit" class="form-control-label">Stok</label>
                             <input type="number" class="form-control" name="qty_stok_edit" id="qty_stok_edit">
@@ -204,7 +214,7 @@
         </div>
     </div>
 
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>

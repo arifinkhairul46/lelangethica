@@ -17,18 +17,18 @@ use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
 
+Route::get('/dashboard/order-lelang/{produk_id}', [ProdukController::class, 'getOrderPerProduk'])->name('getOrderPerProduk');
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-Route::get('/', [ProdukController::class, 'index'])->name('index');
-Route::post('order', [ProdukController::class, 'order_po'])->name('checkout');
-Route::get('detail/{id}', [ProdukController::class, 'detail'])->name('detail');
-Route::get('orders', [ProdukController::class, 'order_history'])->name('order_history');
-Route::get('dashboard/{produk_id}', [ProdukController::class, 'dashboard'])->name('dashboard');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', [ProdukController::class, 'index'])->name('index');
+    Route::post('order', [ProdukController::class, 'order_po'])->name('checkout');
+    Route::get('detail/{id}', [ProdukController::class, 'detail'])->name('detail');
+    Route::get('orders', [ProdukController::class, 'order_history'])->name('order_history');
+});
 
 Route::group(['middleware' =>['auth', 'admin']], function () {
+    Route::get('dashboard/{produk_id}', [ProdukController::class, 'dashboard'])->name('dashboard');
+
     Route::prefix('master')->group(function () {
         Route::get('user', [AdminController::class, 'index'])->name('admin.index');
         Route::post('user', [AdminController::class, 'create_user'])->name('create.user');
@@ -52,9 +52,10 @@ Route::group(['middleware' =>['auth', 'admin']], function () {
         Route::delete('option_btn/{id}', [AdminController::class, 'delete_option_btn'])->name('delete-option_btn');
 
 
+    });
 
-
-
+    Route::prefix('transaksi')->group(function () {
+        Route::get('order', [AdminController::class, 'list_order'])->name('list_order');
     });
 
     Route::prefix('laporan')->group(function () {

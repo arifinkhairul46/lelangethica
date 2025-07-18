@@ -12,7 +12,7 @@
             @foreach ($produkList as $item )
                 @if($item->datetime_released <= date('Y-m-d H:i:s') && $item->datetime_end >= date('Y-m-d H:i:s') && $item->stok > 0)
                 <div class="card shadow text-white bg-dark mb-1">
-                    <img src="{{ asset('storage/'.$item->image_produk) }}" class="card-img-top" alt="{{$item->image}}" style="max-height: 240px">
+                    <img src="{{ asset($item->image_produk) }}" class="card-img-top" alt="{{$item->image}}" style="max-height: 500px">
                     <div class="card-body pt-1">
                         <div class="d-flex" style="justify-content: space-between">
                             <h5 class="card-title my-1" style="color: #BCAA97">{{$item->nama_produk}}</h5>
@@ -39,7 +39,7 @@
                 </div>
                 @elseif ($item->datetime_released >= date('Y-m-d H:i:s') && $item->datetime_end >= date('Y-m-d H:i:s'))
                     <div class="card shadow text-white bg-dark mb-1">
-                        <img src="{{ asset('storage/'.$item->image_produk) }}" class="card-img-top" alt="{{$item->image}}" style="max-height: 240px; filter: opacity(0.3);">
+                        <img src="{{ asset($item->image_produk) }}" class="card-img-top" alt="{{$item->image}}" style="max-height: 500px; filter: opacity(0.3);">
                         <div class="card-body pt-1">
                             <div class="d-flex" style="justify-content: space-between">
                                 <h5 class="card-title my-1" style="color: #BCAA97">{{$item->nama_produk}}</h5>
@@ -67,7 +67,7 @@
                 @else
 
                     <div class="card shadow text-white bg-dark mb-1">
-                        <img src="{{ asset('storage/'.$item->image_produk) }}" class="card-img-top" alt="{{$item->image}}" style="max-height: 240px; filter: opacity(0.3);">
+                        <img src="{{ asset($item->image_produk) }}" class="card-img-top" alt="{{$item->image}}" style="max-height: 500px; filter: opacity(0.3);">
                         <div class="card-body pt-1">
                             <div class="d-flex" style="justify-content: space-between">
                                 <h5 class="card-title my-1" style="color: #BCAA97">{{$item->nama_produk}}</h5>
@@ -144,6 +144,7 @@
                 error: function(xhr, status, error) {
                     if (xhr.status === 400) {
                         alert('Gagal: ' + xhr.responseJSON.message);
+                        window.location.reload(); // Reload halaman jika gagal
                     } else {
                         alert('Terjadi error: ' + xhr.status);
                     }
@@ -170,8 +171,10 @@
                 error: function(xhr, status, error) {
                     if (xhr.status === 400) {
                         alert('Gagal: ' + xhr.responseJSON.message);
+                        window.location.reload(); // Reload halaman jika gagal
                     } else {
                         alert('Terjadi error: ' + xhr.status);
+                        window.location.reload(); // Reload halaman jika terjadi error
                     }
                 }
             });
@@ -195,8 +198,10 @@
                 error: function(xhr, status, error) {
                     if (xhr.status === 400) {
                         alert('Gagal: ' + xhr.responseJSON.message);
+                        window.location.reload(); // Reload halaman jika gagal
                     } else {
                         alert('Terjadi error: ' + xhr.status);
+                        window.location.reload(); // Reload halaman jika terjadi error
                     }
                 }
             });
